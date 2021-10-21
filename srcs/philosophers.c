@@ -32,7 +32,5 @@ int	main(int ac, char **av)
 //		printf("nbr_philo : %zu nbr_lunch : %zu is_alive : %s\n", \
 //				philo_array[i].nbr_philo, philo_array[i].nbr_lunch, \
 //				philo_array[i].is_alive ? "true" : "false");
-	gettimeofday(&tv2, NULL);
-	printf("%li\n", tv2.tv_usec - tv1.tv_usec);
 	free(philo_array);
 }
