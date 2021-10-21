@@ -56,5 +56,5 @@ will print its death.
 
 ## Other ressources
 
-[External functions allowed](./external_functions.md)  
-[Some notes i took](./notes.md)
+[External functions allowed](docs/external_functions.md)  
+[Some notes i took](docs/personal_notes.md)
