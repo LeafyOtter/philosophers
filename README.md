@@ -1,10 +1,11 @@
 # Philosophers
 
-This is a 42 school project which aim to implement the Dining Philosopher's Problem with threads and mutex.
+This is a 42 school project about multi-threading and mutex.  
+The goal is to implement the Dining Philosopher's Problem.  
 
 > I've never thought philosophy would be so deadly - Random person who wrote the subject.
 
-Version of the subject : 8.
+###### Version of the subject : 8
 
 ## Definition of the problem
 
