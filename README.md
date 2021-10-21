@@ -1,11 +1,12 @@
 # Philosophers
-## A 42 school project.
 
-#### This project is about implementing the Dining Philosopher's Problem.
+This is a 42 school project which aim to implement the Dining Philosopher's Problem with threads and mutex.
 
-#### Philosopher with threads and mutex
+> I've never thought philosophy would be so deadly - Random person who wrote the subject.
 
-### Definition of the problem
+Version of the subject : 8.
+
+## Definition of the problem
 
 The problem is as follow :
 - There is a defined number of philosopher around a round table.
@@ -23,7 +24,7 @@ The problem is as follow :
 - When a philosopher has finished eating, he will drop his forks and sleep
 - When a philosopher is done sleeping, he will start thinking.
 
-### Some requirement of the project
+## Some requirement of the project
 
 - The simulation stops when a philosopher dies.
 - The programe takes a set number of arguments :
@@ -52,7 +53,7 @@ will print its death.
 	with a mutex for each of them.
 - Each philosophers should be a thread.
 
-### Other ressources
+## Other ressources
 
 [External functions allowed](./external_functions.md)  
 [Some notes i took](./notes.md)
