@@ -25,7 +25,10 @@ static int	convert_args(
 	while (i < argc)
 	{
 		if (ft_atoli(&nbr, argv[i]))
+		{
+			printf("%s: %s%s%i%s\n", argv[0], INVALID_ARG, ARG_NBR, i, ARG_STR);
 			return (1);
+		}
 		array[i - 1] = nbr;
 		i++;
 	}
@@ -36,18 +39,18 @@ static int	verify_args(
 		int argc,
 		char *name,
 		long *array,
-		t_timep *timep)
+		t_args *args)
 {
 	int		i;
 	long	*current;
 
 	i = 0;
-	current = &timep->nbp;
+	current = &args->nbp;
 	while (i < (argc - 1))
 	{
 		if (array[i] < 0)
 		{
-			printf("%s: %s%s\n", name, INVALID_ARG, ARG_NEG);
+			printf("%s: %s%s%i%s\n", name, INVALID_ARG, ARG_NBR, i, ARG_NEG);
 			return (1);
 		}
 		*current = array[i];
@@ -67,7 +70,7 @@ static int	verify_args(
 int	parsing(
 		int argc,
 		char **argv,
-		t_timep *timep)
+		t_args *args)
 {
 	long	array[5];
 
@@ -75,7 +78,7 @@ int	parsing(
 		return (1);
 	if (convert_args(argc, argv, array))
 		return (1);
-	if (verify_args(argc, argv[0], array, timep))
+	if (verify_args(argc, argv[0], array, args))
 		return (1);
 	return (0);
 }

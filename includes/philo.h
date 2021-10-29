@@ -6,11 +6,14 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <unistd.h>
 
-# include "utils_philo.h"
+# define PTHREAD_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
 
-typedef struct s_timep	t_timep;
+typedef struct s_args	t_args;
 typedef struct s_philo	t_philo;
+typedef struct s_data	t_data;
+typedef struct timeval	t_timeval;
 
 /*
  *	nbp		:	nbr_philo
@@ -20,7 +23,7 @@ typedef struct s_philo	t_philo;
  *	ntpme	:	nbr_time_philosophers_must_eat
  */
 
-struct s_timep
+struct s_args
 {
 	long		nbp;
 	suseconds_t	ttd;
@@ -34,7 +37,17 @@ struct s_philo
 	size_t			nbr_philo;
 	size_t			nbr_lunch;
 	bool			is_alive;
+	t_data			*data;
 	pthread_mutex_t	lock;
+};
+
+struct s_data
+{
+	t_args		*args;
+	t_timeval	start_sim;
+	bool		should_stop;
+	long		nbr_philo_fed;
+	pthread_t	*tid;
 };
 
 #endif

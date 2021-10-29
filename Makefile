@@ -1,4 +1,4 @@
-NAME := philosophers
+NAME := philo
 
 CC = clang
 CFLAGS := -Wall -Wextra -Werror -fsanitize=address -g
@@ -9,8 +9,10 @@ SRCS_DIR  := srcs
 BUILD_DIR := build
 
 SRCS := \
+		main.c \
 		philosophers.c \
 		parsing.c \
+		simulation.c \
 		utils/ft_atoli.c
 
 _SRC =	$(addprefix $(SRCS_DIR)/, $(SRCS))

@@ -5,7 +5,7 @@ The goal is to implement the Dining Philosopher's Problem.
 
 > I've never thought philosophy would be so deadly - Random person who wrote the subject.
 
-###### Version of the subject : 8
+###### Version of the subject : 9
 
 ## Definition of the problem
 

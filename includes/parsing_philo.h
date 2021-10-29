@@ -5,6 +5,6 @@
 # include "philo.h"
 # include "utils_philo.h"
 
-int	parsing(int argc, char **argv, t_timep *timep);
+int	parsing(int argc, char **argv, t_args *args);
 
 #endif
