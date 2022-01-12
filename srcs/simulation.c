@@ -30,6 +30,8 @@ void	print_status(t_philo *philo, char *str)
 void	eat_routine(t_philo *philo)
 {
 	(void)philo;
+//	if (!(philo->nbr_philo % 2))
+//		pthread_mutex_lock(&philo->left);
 }
 
 void	sleep_routine(t_philo *philo)

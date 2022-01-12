@@ -15,13 +15,17 @@ static int	create_philosophers(t_data *data, int nbp, t_philo **philo_array)
 	}
 	while (++i < nbp)
 	{
-		(*philo_array)[i] = (t_philo){i + 1, 0, true, data, PTHREAD_MUTEX_INIT};
-		if (pthread_mutex_init(&(*philo_array)[i].lock, NULL))
+		(*philo_array)[i] = (t_philo){i + 1, 0, true, \
+			data, PTHREAD_MUTEX_INIT, NULL};
+		if (pthread_mutex_init(&(*philo_array)[i].left, NULL))
 		{
 			printf("%s%i\n", MUTEX_INIT, i + 1);
 			return (1);
 		}
+		if (i)
+			(*philo_array)[i - 1].right = &(*philo_array)[i].left;
 	}
+	(*philo_array)[i].right = &(*philo_array)[0].left;
 	return (0);
 }
 
@@ -73,7 +77,7 @@ int	main(int ac, char **av)
 	check_philosopher(&data, &philo_array);
 	wait_end_philo(&data, &philo_array);
 	while (++i < args.nbp)
-		pthread_mutex_destroy(&philo_array[i].lock);
+		pthread_mutex_destroy(&philo_array[i].left);
 	free(data.tid);
 	free(philo_array);
 }

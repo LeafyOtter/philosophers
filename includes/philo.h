@@ -38,7 +38,8 @@ struct s_philo
 	size_t			nbr_lunch;
 	bool			is_alive;
 	t_data			*data;
-	pthread_mutex_t	lock;
+	pthread_mutex_t	left;
+	pthread_mutex_t	*right;
 };
 
 struct s_data
