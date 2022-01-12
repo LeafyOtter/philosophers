@@ -43,11 +43,25 @@ struct s_philo
 
 struct s_data
 {
-	t_args		*args;
-	t_timeval	start_sim;
-	bool		should_stop;
-	long		nbr_philo_fed;
-	pthread_t	*tid;
+	t_args			*args;
+	t_timeval		start_sim;
+	long			nbr_philo_fed;
+	bool			should_stop;
+	long			has_stop;
+	pthread_mutex_t	mutex;
+	pthread_t		*tid;
 };
+
+/*
+ *	[ PARSING ]
+ */
+
+int	parsing(int argc, char **argv, t_args *args);
+
+/*
+ *	[ UTILS ]
+ */
+
+int	ft_atoli(long int *nbr, char *nptr);
 
 #endif

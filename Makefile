@@ -1,7 +1,11 @@
 NAME := philo
 
+MAKEFLAGS := --no-print-directory
+
 CC = clang
-CFLAGS := -Wall -Wextra -Werror -fsanitize=address -g
+#FSANA := -fsanitize=address
+#FSANT  := -fsanitize=thread
+CFLAGS := -Wall -Wextra -Werror $(FSANA) $(FSANT) -g
 IFLAGS := -I./includes -MMD -MP
 LFLAGS := -lpthread
 

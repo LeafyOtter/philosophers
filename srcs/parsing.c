@@ -1,4 +1,5 @@
-#include "parsing_philo.h"
+#include "philo.h"
+#include "error_message.h"
 
 static int	check_nbr_args(
 		int argc,

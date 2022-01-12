@@ -40,9 +40,9 @@ it will need to think a longer time.
 - A philosopher dies after time_to_die, except if they eat.
 - Time to die is counted since last time they ate or beginning of simulation;
 
-### Smart Locking
+### Smart Locking (cant implement)
 
-this methode would work for an odd number of philosophers, i'm gonna need
+this method would work for an odd number of philosophers, i'm gonna need
 to test it on an even number.  
 
 so for n number of philosophers (and by extension n number of forks)
