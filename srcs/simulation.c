@@ -2,6 +2,11 @@
 #include "simulation.h"
 #include "error_message.h"
 
+void	dump_log(t_philo *philo)
+{
+	printf("DEBUG: %li\n", philo->nbr_philo);
+}
+
 bool	check_death(t_data *data)
 {
 	bool	ret;
@@ -23,18 +28,49 @@ void	print_status(t_philo *philo, char *str)
 	gettimeofday(&time, NULL);
 	time_stamp.tv_sec = time.tv_sec - philo->data->start_sim.tv_sec;
 	time_stamp.tv_usec = time.tv_usec - philo->data->start_sim.tv_usec;
-	time_ms = (time_stamp.tv_sec  * 1000) + (time_stamp.tv_usec / 1000);
+	time_ms = (time_stamp.tv_sec * 1000) + (time_stamp.tv_usec / 1000);
 	printf("%5li %zu %s\n", time_ms, philo->nbr_philo, str);
 }
 
-void	eat_routine(t_philo *philo)
+void	multi_mutex_unlock(t_philo *philo)
 {
-	(void)philo;
+	pthread_mutex_unlock(&philo->left);
+	pthread_mutex_unlock(philo->right);
 }
 
-void	sleep_routine(t_philo *philo)
+bool	eat_routine(t_philo *philo)
+{
+	if (philo->nbr_philo % 2)
+	{
+		pthread_mutex_lock(&philo->left);
+		if (check_death(philo->data))
+			return (pthread_mutex_unlock(&philo->left), true);
+		print_status(philo, FORK_MSG);
+		pthread_mutex_lock(philo->right);
+		if (check_death(philo->data))
+			return (multi_mutex_unlock(philo), true);
+		print_status(philo, FORK_MSG);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right);
+		if (check_death(philo->data))
+			return (pthread_mutex_unlock(philo->right), true);
+		print_status(philo, FORK_MSG);
+		pthread_mutex_lock(&philo->left);
+		if (check_death(philo->data))
+			return (multi_mutex_unlock(philo), true);
+		print_status(philo, FORK_MSG);
+	}
+	print_status(philo, EATING_MSG);
+	usleep(philo->data->args->tte * 1000);
+	return (multi_mutex_unlock(philo), false);
+}
+
+bool	sleep_routine(t_philo *philo)
 {
 	(void)philo;
+	return (false);
 }
 
 void	*routine(void *arg)
@@ -46,10 +82,12 @@ void	*routine(void *arg)
 	break_flag = false;
 	while (!break_flag)
 	{
-		eat_routine(philo);
+		if (eat_routine(philo))
+			break ;
 		if (check_death(philo->data))
 			break ;
-		sleep_routine(philo);
+		if (sleep_routine(philo))
+			break ;
 		if (check_death(philo->data))
 			break ;
 		print_status(philo, THINKING_MSG);
