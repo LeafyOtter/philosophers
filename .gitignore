@@ -1,0 +1,5 @@
+a.out
+philosophers
+*.o
+*.d
+*.swp

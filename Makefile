@@ -2,7 +2,7 @@ NAME := philo
 
 MAKEFLAGS := --no-print-directory
 
-CC = clang
+CC = gcc
 FSANA := -fsanitize=address
 #FSANT  := -fsanitize=thread
 CFLAGS := -Wall -Wextra -Werror $(FSANA) $(FSANT) -g
@@ -14,7 +14,6 @@ BUILD_DIR := build
 
 SRCS := \
 		main.c \
-		philosophers.c \
 		parsing.c \
 		simulation.c \
 		utils/ft_atoli.c

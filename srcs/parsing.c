@@ -55,6 +55,8 @@ static int	verify_args(
 			return (1);
 		}
 		*current = array[i];
+		if (i >= 1 && i <= 3)
+			*current *= 1000;
 		current++;
 		i++;
 	}

@@ -36,7 +36,9 @@ struct s_philo
 {
 	size_t			nbr_philo;
 	size_t			nbr_lunch;
+	t_timeval		last_lunch;
 	bool			is_alive;
+	pthread_mutex_t	mutex;
 	t_data			*data;
 	pthread_mutex_t	left;
 	pthread_mutex_t	*right;
