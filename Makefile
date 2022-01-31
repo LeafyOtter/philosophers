@@ -3,8 +3,8 @@ NAME := philo
 MAKEFLAGS := --no-print-directory
 
 CC = gcc
-FSANA := -fsanitize=address
-#FSANT  := -fsanitize=thread
+#FSANA := -fsanitize=address
+FSANT  := -fsanitize=thread
 CFLAGS := -Wall -Wextra -Werror $(FSANA) $(FSANT) -g
 IFLAGS := -I./includes -MMD -MP
 LFLAGS := -lpthread
@@ -15,6 +15,7 @@ BUILD_DIR := build
 SRCS := \
 		main.c \
 		parsing.c \
+		routine.c \
 		simulation.c \
 		utils/ft_atoli.c
 
