@@ -7,7 +7,7 @@
 # define THINKING_MSG "is thinking"
 # define DEAD_MSG "died"
 
-# define WAIT_TIME 7500
+# define WAIT_TIME 10000
 
 int		start_simulation(t_data *data, t_philo **philo_array);
 void	print_status(t_philo *philo, char *str);

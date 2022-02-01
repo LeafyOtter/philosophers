@@ -25,11 +25,11 @@ typedef struct timeval	t_timeval;
 
 struct s_args
 {
-	long		nbp;
+	size_t		nbp;
 	suseconds_t	ttd;
 	suseconds_t	tte;
 	suseconds_t	tts;
-	long		ntpme;
+	size_t		ntpme;
 };
 
 struct s_philo
@@ -38,6 +38,7 @@ struct s_philo
 	size_t			nbr_lunch;
 	t_timeval		last_lunch;
 	bool			is_alive;
+	bool			lunch;
 	pthread_mutex_t	mutex;
 	t_data			*data;
 	pthread_mutex_t	left;
@@ -48,9 +49,9 @@ struct s_data
 {
 	t_args			*args;
 	t_timeval		start_sim;
-	long			nbr_philo_fed;
+	size_t			nbr_philo_fed;
 	bool			should_stop;
-	long			has_stop;
+	size_t			has_stop;
 	pthread_mutex_t	mutex;
 	pthread_t		*tid;
 };

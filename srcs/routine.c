@@ -12,6 +12,7 @@ bool	eat_helper(t_philo *philo)
 {
 	print_status(philo, EATING_MSG);
 	pthread_mutex_lock(&philo->mutex);
+	philo->nbr_lunch++;
 	gettimeofday(&philo->last_lunch, NULL);
 	pthread_mutex_unlock(&philo->mutex);
 	if (philo_usleep(philo, philo->data->args->tte))
@@ -29,6 +30,11 @@ bool	eat_routine(t_philo *philo)
 		if (check_death(philo->data))
 			return (pthread_mutex_unlock(&philo->left), true);
 		print_status(philo, FORK_MSG);
+		if (philo->data->args->nbp == 1)
+		{
+			if (philo_usleep(philo, philo->data->args->ttd))
+				return (pthread_mutex_unlock(&philo->left), true);
+		}
 		pthread_mutex_lock(philo->right);
 		if (check_death(philo->data))
 			return (multi_mutex_unlock(philo), true);
@@ -40,9 +46,11 @@ bool	eat_routine(t_philo *philo)
 		if (check_death(philo->data))
 			return (pthread_mutex_unlock(philo->right), true);
 		print_status(philo, FORK_MSG);
+//		printf("hi?\n");
 		pthread_mutex_lock(&philo->left);
 		if (check_death(philo->data))
 			return (multi_mutex_unlock(philo), true);
+//		printf("hi? %zu\n", philo->nbr_philo);
 		print_status(philo, FORK_MSG);
 	}
 	return (eat_helper(philo));
@@ -72,9 +80,10 @@ void	*routine(void *arg)
 		if (check_death(philo->data))
 			break ;
 		print_status(philo, THINKING_MSG);
-		usleep(100);
+		usleep(500);
 	}
 	pthread_mutex_lock(&philo->mutex);
+//	printf("Quitting %zu\n", philo->nbr_philo);
 	if (!philo->is_alive)
 		print_status(philo, DEAD_MSG);
 	pthread_mutex_unlock(&philo->mutex);

@@ -43,7 +43,7 @@ static int	verify_args(
 		t_args *args)
 {
 	int		i;
-	long	*current;
+	size_t	*current;
 
 	i = 0;
 	current = &args->nbp;

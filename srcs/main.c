@@ -15,7 +15,7 @@ static int	create_philosophers(t_data *data, int nbp, t_philo **philo_array)
 	}
 	while (++i < nbp)
 	{
-		(*philo_array)[i] = (t_philo){i + 1, 0, {0, 0}, true,
+		(*philo_array)[i] = (t_philo){i + 1, 0, {0, 0}, true, false,
 			PTHREAD_MUTEX_INIT, data, PTHREAD_MUTEX_INIT, NULL};
 		if (pthread_mutex_init(&(*philo_array)[i].left, NULL))
 			return (printf("%s%i\n", MUTEX_INIT, i + 1));
@@ -30,37 +30,49 @@ static int	create_philosophers(t_data *data, int nbp, t_philo **philo_array)
 
 static int	check_philosopher(t_data *data, t_philo *philo_array)
 {
-	long		i;
+	size_t		i;
 	t_timeval	time;
 	long		time_ms;
 
-	i = -1;
-	while (i++)
+	i = 0;
+	while (!data->should_stop)
 	{
-		if (i >= data->args->nbp)
+		if (i == data->args->nbp)
 			i = 0;
 		gettimeofday(&time, NULL);
 		pthread_mutex_lock(&(philo_array)[i].mutex);
 		time_ms = ((time.tv_sec - (philo_array)[i].last_lunch.tv_sec) * 1000) \
 			+ ((time.tv_usec - (philo_array)[i].last_lunch.tv_usec) / 1000);
+		pthread_mutex_lock(&data->mutex);
+//		printf("blabla debug: %zu\n", (philo_array)[i].nbr_lunch);
+		if (((philo_array)[i].nbr_lunch == data->args->ntpme) && \
+			!(philo_array)[i].lunch)
+		{
+			data->nbr_philo_fed++;
+			(philo_array)[i].lunch = true;
+//			printf("i am the culpright\n");
+		}
 		if (time_ms * 1000 > data->args->ttd)
 		{
 			(philo_array)[i].is_alive = false;
-			pthread_mutex_lock(&data->mutex);
 			data->should_stop = true;
-			pthread_mutex_unlock(&data->mutex);
-			pthread_mutex_unlock(&(philo_array)[i].mutex);
-			break ;
+//			printf("liar it is me\n");
 		}
+		if (data->nbr_philo_fed == data->args->nbp)
+		{
+			data->should_stop = true;
+//			printf("nononono its me\n");
+		}
+		pthread_mutex_unlock(&data->mutex);
 		pthread_mutex_unlock(&(philo_array)[i].mutex);
+		i++;
 	}
 	return (1);
 }
-		//	printf("DEBUG: %li\n", time_ms);
 
 static int	wait_end_philo(t_data *data)
 {
-	long	tmp;
+	size_t	tmp;
 
 	while (1)
 	{
@@ -77,7 +89,7 @@ static int	wait_end_philo(t_data *data)
 
 int	main(int ac, char **av)
 {
-	int				i;
+	size_t			i;
 	t_args			args;
 	t_data			data;
 	t_philo			*philo_array;
@@ -92,8 +104,12 @@ int	main(int ac, char **av)
 	start_simulation(&data, &philo_array);
 	check_philosopher(&data, philo_array);
 	wait_end_philo(&data);
-	while (++i < args.nbp)
+	while (i < args.nbp)
+	{
+	//	printf("NUMBER OF TIME %zu ATE : %zu\n", (philo_array)[i].nbr_philo, (philo_array)[i].nbr_lunch);
 		pthread_mutex_destroy(&philo_array[i].left);
+		i++;
+	}
 	free(data.tid);
 	free(philo_array);
 }

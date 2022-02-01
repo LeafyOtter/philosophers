@@ -42,17 +42,15 @@ bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait)
 	suseconds_t	waited_time;
 
 	waited_time = 0;
-	while (1)
+	while ((waited_time + WAIT_TIME) < time_to_wait)
 	{
-		if (time_to_wait <= waited_time)
-			break ;
 		usleep(WAIT_TIME);
 		if (check_death(philo->data))
 			return (true);
 		waited_time += WAIT_TIME;
 	}
-	if (waited_time < time_to_wait)
-		usleep(time_to_wait - waited_time);
+//	if ((time_to_wait - waited_time) <= WAIT_TIME)
+	usleep(time_to_wait - waited_time);
 	if (check_death(philo->data))
 		return (true);
 	return (false);
@@ -60,7 +58,7 @@ bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait)
 
 int	start_simulation(t_data *data, t_philo **philo_array)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	gettimeofday(&data->start_sim, NULL);

@@ -4,7 +4,7 @@ MAKEFLAGS := --no-print-directory
 
 CC = gcc
 #FSANA := -fsanitize=address
-FSANT  := -fsanitize=thread
+#FSANT  := -fsanitize=thread
 CFLAGS := -Wall -Wextra -Werror $(FSANA) $(FSANT) -g
 IFLAGS := -I./includes -MMD -MP
 LFLAGS := -lpthread
