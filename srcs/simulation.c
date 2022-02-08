@@ -37,6 +37,18 @@ void	print_status(t_philo *philo, char *str)
 // TODO: stock time of lunch in struct
 // TODO: segment usleep()
 
+/*
+void	ft_usleep(long int time_in_ms)
+{
+	long int	start_time;
+
+	start_time = 0;
+	start_time = actual_time();
+	while ((actual_time() - start_time) < time_in_ms)
+		usleep(time_in_ms / 10);
+}
+*/
+
 bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait)
 {
 	suseconds_t	waited_time;
@@ -50,6 +62,7 @@ bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait)
 		waited_time += WAIT_TIME;
 	}
 //	if ((time_to_wait - waited_time) <= WAIT_TIME)
+//	printf("%li %li %li\n", time_to_wait, waited_time, time_to_wait - waited_time);
 	usleep(time_to_wait - waited_time);
 	if (check_death(philo->data))
 		return (true);

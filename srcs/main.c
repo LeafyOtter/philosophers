@@ -66,6 +66,7 @@ static int	check_philosopher(t_data *data, t_philo *philo_array)
 		pthread_mutex_unlock(&data->mutex);
 		pthread_mutex_unlock(&(philo_array)[i].mutex);
 		i++;
+		usleep(500);
 	}
 	return (1);
 }
@@ -87,6 +88,12 @@ static int	wait_end_philo(t_data *data)
 
 // check if each philo is fed
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+//int fd;
+
 int	main(int ac, char **av)
 {
 	size_t			i;
@@ -95,6 +102,8 @@ int	main(int ac, char **av)
 	t_philo			*philo_array;
 
 	i = 0;
+//	fd = open("output", O_CREAT | O_APPEND | O_WRONLY, 0755);
+//	dprintf(fd, "--------------NEW TEST------------------------------------\n");
 	args = (t_args){0, 0, 0, 0, 0};
 	if (parsing(ac, av, &args))
 		return (1);
@@ -110,6 +119,7 @@ int	main(int ac, char **av)
 		pthread_mutex_destroy(&philo_array[i].left);
 		i++;
 	}
+//	close(fd);
 	free(data.tid);
 	free(philo_array);
 }

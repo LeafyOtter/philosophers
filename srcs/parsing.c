@@ -83,5 +83,7 @@ int	parsing(
 		return (1);
 	if (verify_args(argc, argv[0], array, args))
 		return (1);
+	if (argc == 5)
+		args->ntpme = -1;
 	return (0);
 }

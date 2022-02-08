@@ -10,13 +10,15 @@ void	multi_mutex_unlock(t_philo *philo)
 
 bool	eat_helper(t_philo *philo)
 {
-	print_status(philo, EATING_MSG);
+//	print_status(philo, EATING_MSG);
 	pthread_mutex_lock(&philo->mutex);
 	philo->nbr_lunch++;
 	gettimeofday(&philo->last_lunch, NULL);
 	pthread_mutex_unlock(&philo->mutex);
+	print_status(philo, EATING_MSG);
 	if (philo_usleep(philo, philo->data->args->tte))
 		return (multi_mutex_unlock(philo), true);
+//	print_status(philo, "IS DEBUGGING");
 	return (multi_mutex_unlock(philo), false);
 }
 
@@ -24,6 +26,7 @@ bool	eat_helper(t_philo *philo)
 
 bool	eat_routine(t_philo *philo)
 {
+	static int i = 0;
 	if (philo->nbr_philo % 2)
 	{
 		pthread_mutex_lock(&philo->left);
@@ -42,6 +45,8 @@ bool	eat_routine(t_philo *philo)
 	}
 	else
 	{
+		if (!i)
+		{	usleep(75);i++;}
 		pthread_mutex_lock(philo->right);
 		if (check_death(philo->data))
 			return (pthread_mutex_unlock(philo->right), true);
@@ -66,7 +71,11 @@ bool	sleep_routine(t_philo *philo)
 
 void	*routine(void *arg)
 {
+	t_timeval	time;
+	long	time_ms;
+	long	tmp;
 	t_philo	*philo;
+//	extern int fd;
 
 	philo = (t_philo *)arg;
 	while (!check_death(philo->data))
@@ -80,7 +89,19 @@ void	*routine(void *arg)
 		if (check_death(philo->data))
 			break ;
 		print_status(philo, THINKING_MSG);
-		usleep(500);
+		while (1)
+		{
+			gettimeofday(&time, NULL);
+			time_ms = ((time.tv_sec - philo->last_lunch.tv_sec) * 1000) \
+				+ ((time.tv_usec - philo->last_lunch.tv_usec) / 1000);
+			tmp = (philo->data->args->tte + philo->data->args->tts) >> 1;
+//			dprintf(fd, "philo %zu : %li %li\n", philo->nbr_philo, tmp, 
+//			philo->data->args->ttd - (time_ms * 1000));
+			if (tmp < (philo->data->args->ttd - (time_ms * 1000)))
+				philo_usleep(philo, tmp);
+			else
+				break;
+		}
 	}
 	pthread_mutex_lock(&philo->mutex);
 //	printf("Quitting %zu\n", philo->nbr_philo);
@@ -92,3 +113,9 @@ void	*routine(void *arg)
 	pthread_mutex_unlock(&philo->data->mutex);
 	return (NULL);
 }
+
+
+/*
+(tt_eat + tt_sleep) / 2, perso
+Si temps_avant_mort > (tt_eat + tt_sleep) /2  , je fait attendre cette durée
+*/

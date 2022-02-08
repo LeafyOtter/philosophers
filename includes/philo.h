@@ -29,13 +29,13 @@ struct s_args
 	suseconds_t	ttd;
 	suseconds_t	tte;
 	suseconds_t	tts;
-	size_t		ntpme;
+	long		ntpme;
 };
 
 struct s_philo
 {
 	size_t			nbr_philo;
-	size_t			nbr_lunch;
+	long			nbr_lunch;
 	t_timeval		last_lunch;
 	bool			is_alive;
 	bool			lunch;
