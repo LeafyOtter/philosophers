@@ -13,6 +13,7 @@ SRCS_DIR  := srcs
 BUILD_DIR := build
 
 SRCS := \
+		eat.c \
 		main.c \
 		parsing.c \
 		routine.c \

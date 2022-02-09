@@ -7,13 +7,13 @@
 # define THINKING_MSG "is thinking"
 # define DEAD_MSG "died"
 
-# define WAIT_TIME 5000
+int			start_simulation(t_data *data, t_philo **philo_array);
+void		print_status(t_philo *philo, char *str);
+bool		check_death(t_data *data);
+bool		philo_usleep(t_philo *philo, suseconds_t time_to_wait);
 
-int		start_simulation(t_data *data, t_philo **philo_array);
-void	print_status(t_philo *philo, char *str);
-bool	check_death(t_data *data);
-bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait);
-
-void	*routine(void *arg);
+long int	actual_time(void);
+void		*routine(void *arg);
+bool		eat_routine(t_philo *philo);
 
 #endif

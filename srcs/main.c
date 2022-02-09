@@ -28,45 +28,45 @@ static int	create_philosophers(t_data *data, int nbp, t_philo **philo_array)
 	return (0);
 }
 
+static void	check_philosopher_helper(t_data *data, t_philo *philo_array, int i)
+{
+	t_timeval	time;
+	long		time_ms;
+
+	gettimeofday(&time, NULL);
+	pthread_mutex_lock(&(philo_array)[i].mutex);
+	time_ms = ((time.tv_sec - (philo_array)[i].last_lunch.tv_sec) * 1000) \
+		+ ((time.tv_usec - (philo_array)[i].last_lunch.tv_usec) / 1000);
+	pthread_mutex_lock(&data->mutex);
+	if (((philo_array)[i].nbr_lunch == data->args->ntpme) && \
+		!(philo_array)[i].lunch)
+	{
+		data->nbr_philo_fed++;
+		(philo_array)[i].lunch = true;
+	}
+	if (time_ms * 1000 > data->args->ttd)
+	{
+		(philo_array)[i].is_alive = false;
+		data->should_stop = true;
+	}
+	if (data->nbr_philo_fed == data->args->nbp)
+		data->should_stop = true;
+	pthread_mutex_unlock(&data->mutex);
+	pthread_mutex_unlock(&(philo_array)[i].mutex);
+}
+
 static int	check_philosopher(t_data *data, t_philo *philo_array)
 {
 	size_t		i;
-	t_timeval	time;
-	long		time_ms;
 
 	i = 0;
 	while (!data->should_stop)
 	{
 		if (i == data->args->nbp)
 			i = 0;
-		gettimeofday(&time, NULL);
-		pthread_mutex_lock(&(philo_array)[i].mutex);
-		time_ms = ((time.tv_sec - (philo_array)[i].last_lunch.tv_sec) * 1000) \
-			+ ((time.tv_usec - (philo_array)[i].last_lunch.tv_usec) / 1000);
-		pthread_mutex_lock(&data->mutex);
-//		printf("blabla debug: %zu\n", (philo_array)[i].nbr_lunch);
-		if (((philo_array)[i].nbr_lunch == data->args->ntpme) && \
-			!(philo_array)[i].lunch)
-		{
-			data->nbr_philo_fed++;
-			(philo_array)[i].lunch = true;
-//			printf("i am the culpright\n");
-		}
-		if (time_ms * 1000 > data->args->ttd)
-		{
-			(philo_array)[i].is_alive = false;
-			data->should_stop = true;
-//			printf("liar it is me\n");
-		}
-		if (data->nbr_philo_fed == data->args->nbp)
-		{
-			data->should_stop = true;
-//			printf("nononono its me\n");
-		}
-		pthread_mutex_unlock(&data->mutex);
-		pthread_mutex_unlock(&(philo_array)[i].mutex);
+		check_philosopher_helper(data, philo_array, i);
 		i++;
-		usleep(500);
+		usleep(50);
 	}
 	return (1);
 }
@@ -86,14 +86,6 @@ static int	wait_end_philo(t_data *data)
 	return (0);
 }
 
-// check if each philo is fed
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-//int fd;
-
 int	main(int ac, char **av)
 {
 	size_t			i;
@@ -102,8 +94,6 @@ int	main(int ac, char **av)
 	t_philo			*philo_array;
 
 	i = 0;
-//	fd = open("output", O_CREAT | O_APPEND | O_WRONLY, 0755);
-//	dprintf(fd, "--------------NEW TEST------------------------------------\n");
 	args = (t_args){0, 0, 0, 0, 0};
 	if (parsing(ac, av, &args))
 		return (1);
@@ -115,11 +105,9 @@ int	main(int ac, char **av)
 	wait_end_philo(&data);
 	while (i < args.nbp)
 	{
-	//	printf("NUMBER OF TIME %zu ATE : %zu\n", (philo_array)[i].nbr_philo, (philo_array)[i].nbr_lunch);
 		pthread_mutex_destroy(&philo_array[i].left);
 		i++;
 	}
-//	close(fd);
 	free(data.tid);
 	free(philo_array);
 }
