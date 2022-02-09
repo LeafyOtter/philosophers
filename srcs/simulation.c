@@ -65,6 +65,7 @@ bool	philo_usleep(t_philo *philo, suseconds_t time_to_wait)
 		if (check_death(philo->data))
 			return (true);
 	}
+	usleep(500);
 	return (false);
 }
 
