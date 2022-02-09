@@ -23,6 +23,11 @@ bool	sleep_routine(t_philo *philo)
 				break;
 */
 
+/*
+(tt_eat + tt_sleep) / 2, perso
+Si temps_avant_mort > (tt_eat + tt_sleep) /2  , je fait attendre cette durée
+*/
+
 bool	think_routine(t_philo *philo)
 {
 	t_timeval	time;
@@ -38,7 +43,7 @@ bool	think_routine(t_philo *philo)
 		tmp = (philo->data->args->tte + philo->data->args->tts) >> 1;
 		if (tmp < (philo->data->args->ttd - (time_ms * 1000)))
 		{
-			if (philo_usleep(philo, tmp))
+			if (philo_usleep(philo, tmp >> 1))
 				return (true);
 		}
 		else
@@ -74,8 +79,3 @@ void	*routine(void *arg)
 	pthread_mutex_unlock(&philo->data->mutex);
 	return (NULL);
 }
-
-/*
-(tt_eat + tt_sleep) / 2, perso
-Si temps_avant_mort > (tt_eat + tt_sleep) /2  , je fait attendre cette durée
-*/

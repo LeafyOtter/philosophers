@@ -28,8 +28,8 @@ static bool	left_first(t_philo *philo)
 	print_status(philo, FORK_MSG);
 	if (philo->data->args->nbp == 1)
 	{
-		if (philo_usleep(philo, philo->data->args->ttd))
-			return (pthread_mutex_unlock(&philo->left), true);
+		philo_usleep(philo, philo->data->args->ttd);
+		return (pthread_mutex_unlock(&philo->left), true);
 	}
 	pthread_mutex_lock(philo->right);
 	if (check_death(philo->data))
@@ -40,6 +40,13 @@ static bool	left_first(t_philo *philo)
 
 static bool	right_first(t_philo *philo)
 {
+	static int	i = 0;
+
+	if (!i)
+	{
+		usleep(50);
+		i++;
+	}
 	pthread_mutex_lock(philo->right);
 	if (check_death(philo->data))
 		return (pthread_mutex_unlock(philo->right), true);
