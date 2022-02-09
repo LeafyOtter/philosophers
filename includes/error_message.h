@@ -13,6 +13,7 @@
 # define ARG_NBR "Argument number "
 # define ARG_STR " should be an integer."
 # define ARG_NEG " should be positive."
+# define ARG_DIF_0 " shouldn't be equal to 0."
 # define MALLOC_ERR "Malloc failed. Your system might be on fire"
 # define MUTEX_INIT "Failed to initialize mutex for philosopher number "
 

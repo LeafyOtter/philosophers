@@ -28,7 +28,7 @@ static bool	left_first(t_philo *philo)
 	print_status(philo, FORK_MSG);
 	if (philo->data->args->nbp == 1)
 	{
-		philo_usleep(philo, philo->data->args->ttd);
+		philo_usleep(philo, philo->data->args->ttd << 1);
 		return (pthread_mutex_unlock(&philo->left), true);
 	}
 	pthread_mutex_lock(philo->right);

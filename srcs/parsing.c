@@ -47,6 +47,11 @@ static int	verify_args(
 
 	i = 0;
 	current = &args->nbp;
+	if (!array[0])
+	{
+		printf("%s: %s%s%i%s\n", name, INVALID_ARG, ARG_NBR, i, ARG_DIF_0);
+		return (1);
+	}
 	while (i < (argc - 1))
 	{
 		if (array[i] < 0)

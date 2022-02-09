@@ -81,6 +81,8 @@ int	start_simulation(t_data *data, t_philo **philo_array)
 		printf("%s\n", MALLOC_ERR);
 		return (1);
 	}
+	if (data->should_stop)
+		return (1);
 	while (i < data->args->nbp)
 	{
 		(*philo_array)[i].data = data;

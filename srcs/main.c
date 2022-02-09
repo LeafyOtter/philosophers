@@ -100,6 +100,9 @@ int	main(int ac, char **av)
 	if (create_philosophers(&data, args.nbp, &philo_array))
 		return (1);
 	data = (t_data){&args, {0, 0}, 0, false, 0, PTHREAD_MUTEX_INIT, NULL};
+	if (!args.ntpme)
+		data = (t_data){&args, {0, 0}, 0, true, data.args->nbp, \
+			PTHREAD_MUTEX_INIT, NULL};
 	start_simulation(&data, &philo_array);
 	check_philosopher(&data, philo_array);
 	wait_end_philo(&data);
